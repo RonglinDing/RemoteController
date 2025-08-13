@@ -1,0 +1,75 @@
+# 忽略 VS 生成的用户配置文件
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# 忽略构建输出目录
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Oo]ut/
+ipch/
+
+# 编译产物
+*.obj
+*.pch
+*.pdb
+*.idb
+*.ilk
+*.meta
+*.tlog
+*.lastbuildstate
+*.log
+*.vspscc
+*.vssscc
+
+# 动态链接/静态库
+*.dll
+*.lib
+*.so
+*.a
+
+# 可执行文件
+*.exe
+*.app
+*.out
+
+# 生成的数据库文件
+*.ipdb
+*.iobj
+*.sdf
+*.cachefile
+*.dbmdl
+
+# VS 本地缓存目录
+.vs/
+
+# 临时文件
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+
+# 不上传测试结果
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# 忽略 NuGet 包目录
+packages/
+*.nupkg
+
+# 忽略发布包
+*.Publish.xml
+
+# 忽略用户机密文件
+*.pfx
+*.snk
+*.key
+*.pem
+
+# 忽略环境变量文件
+.env
+/RemoteCtrl/RemoteClient/x64/Debug
+/RemoteCtrl/RemoteCtrl/x64/Debug
