@@ -220,6 +220,25 @@ void CRemoteClientDlg::OnBnClickedButtonTest2()
 	}
 }
 
+void CRemoteClientDlg::LoadFileCUrrentPath()
+{
+	HTREEITEM hItem =  m_tree.GetSelectedItem(); // 获取选中的树项
+	CString strPath = GetPath(hItem);
+	m_list.DeleteAllItems(); // 清空列表控件
+	int nCmd = SendCommondPacket(2, false, (BYTE*)(LPCTSTR)strPath, strPath.GetLength());
+	CClientSocket* pClient = CClientSocket::GetInstance();
+	PFileInfo pInfo = (PFileInfo)pClient->GetPacket().strData.c_str();
+	while (pInfo->hasNext) {
+		if (!pInfo->isDirectory) {
+			m_list.InsertItem(0, pInfo->fileName);
+		}
+		int cmd = pClient->DealCommand();
+		if (cmd < 0)break;
+		pInfo = (PFileInfo)CClientSocket::GetInstance()->GetPacket().strData.c_str(); // 获取文件信息
+	}
+	pClient->CloseSocket();
+}
+
 void CRemoteClientDlg::LoadFileInfo()
 {
 	CPoint ptMouse;
@@ -229,9 +248,10 @@ void CRemoteClientDlg::LoadFileInfo()
 	HTREEITEM hTreeSelected = m_tree.HitTest(ptMouse, 0);
 	if (hTreeSelected == NULL)
 		return;
-	//if(m_tree.GetChildItem(hTreeSelected) == NULL)
-	//	return; // 确保获取到子项
+	if(m_tree.GetChildItem(hTreeSelected) == NULL)
+		return; // 确保获取到子项
 	DeleteTreeChildrenItem(hTreeSelected);
+	m_list.DeleteAllItems(); // 清空列表控件
 	CString strPath = GetPath(hTreeSelected);
 	int nCmd = SendCommondPacket(2, false, (BYTE*)(LPCTSTR)strPath, strPath.GetLength());
 	CClientSocket* pClient = CClientSocket::GetInstance();
@@ -373,6 +393,7 @@ void CRemoteClientDlg::OnDeletefile()
 	if (ret < 0) {
 		AfxMessageBox(_T("删除文件失败"));
 	}
+	LoadFileCUrrentPath(); // 重新加载文件信息
 }
 
 void CRemoteClientDlg::OnOpenfile()

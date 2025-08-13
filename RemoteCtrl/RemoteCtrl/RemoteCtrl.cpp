@@ -362,9 +362,10 @@ int DeleteLocalFile() {
 	std::string strPath;
 	CServerSocket::GetInstance()->GetFilePath(strPath);
 	TCHAR sPath[MAX_PATH] = _T("");
-	mbstowcs(sPath, strPath.c_str(), strPath.size());
-
-	DeleteFile(sPath);
+	//mbstowcs(sPath, strPath.c_str(), strPath.size());// 将多字节字符串转换为宽字符字符串，中文容易乱码
+	MultiByteToWideChar(CP_ACP, 0,strPath.c_str(), strPath.size(),
+		sPath, sizeof(sPath) / sizeof(TCHAR));
+	DeleteFileA(strPath.c_str());
 	CPacket packet(9, NULL, 0); // 创建数据包
 	bool ret = CServerSocket::GetInstance()->SendData(packet);
 
