@@ -1,0 +1,54 @@
+﻿
+// RemoteClientDlg.h: 头文件
+//
+
+#pragma once
+
+
+// CRemoteClientDlg 对话框
+class CRemoteClientDlg : public CDialogEx
+{
+// 构造
+public:
+	CRemoteClientDlg(CWnd* pParent = nullptr);	// 标准构造函数
+
+// 对话框数据
+#ifdef AFX_DESIGN_TIME
+	enum { IDD = IDD_REMOTECLIENT_DIALOG };
+#endif
+
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
+private:
+	void LoadFileInfo();
+	CString GetPath(HTREEITEM hTree);
+	void DeleteTreeChildrenItem(HTREEITEM hTreeItem);
+	int SendCommondPacket(int nCmd,bool autoClose = true, BYTE*pData = NULL, size_t nLength = 0);
+
+// 实现
+protected:
+	HICON m_hIcon;
+
+	// 生成的消息映射函数
+	virtual BOOL OnInitDialog();
+	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+	afx_msg void OnPaint();
+	afx_msg HCURSOR OnQueryDragIcon();
+	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButtonTest();
+	DWORD m_server_address;
+	CString m_nport;
+	afx_msg void OnEnChangeEditIdport();
+	afx_msg void OnBnClickedButtonTest2();
+	CTreeCtrl m_tree;
+	afx_msg void OnNMDblclkTreeDir(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMClickTreeDir(NMHDR* pNMHDR, LRESULT* pResult);
+	// 显示文件
+	CListCtrl m_list;
+	afx_msg void OnNMRClickListfild(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnDownfile();
+	afx_msg void OnDeletefile();
+	afx_msg void OnOpenfile();
+};
