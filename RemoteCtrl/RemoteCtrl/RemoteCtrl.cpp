@@ -110,7 +110,7 @@ int MakeDirectoryInfo() {
         count++;
         
         // 添加一个小延迟，确保数据发送完成
-        Sleep(1);
+        //Sleep(1);
         
     } while (_findnext(hfind, &fdata) == 0);  // 修复：正确的返回值判断
     

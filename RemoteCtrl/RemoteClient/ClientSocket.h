@@ -196,19 +196,18 @@ public:
 	int DealCommand() {
 		if (m_socket == -1) return -1; // 客户端未连接
 		char* szBuffer = m_buffer.data();
-		memset(szBuffer, 0, BFFER_SIZE);
-		size_t index = 0;
+		static size_t index = 0;
 		while (true)
 		{
 			size_t len = recv(m_socket, szBuffer+ index, BFFER_SIZE - index, 0); // 接收数据
-			if (len <= 0) {
+			if ((len <= 0) && (index == 0)) {
 				return -1; // 连接断开或出错
 			}
 			index += len;
 			len = index;
 			m_packet = CPacket((BYTE*)szBuffer, len);
 			if (len > 0) {
-				memmove(szBuffer, szBuffer + len, BFFER_SIZE - len); // 清除已处理的数据
+				memmove(szBuffer, szBuffer + len, index - len); // 清除已处理的数据
 				index -= len; // 更新索引
 				return m_packet.sCmd;
 			}
@@ -265,6 +264,7 @@ private:
 			exit(0);
 		}
 		m_buffer.resize(BFFER_SIZE);
+		memset(m_buffer.data(), 0, BFFER_SIZE);
 	}
 
 	~CClientSocket() {
